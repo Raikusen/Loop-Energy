@@ -1,0 +1,24 @@
+{
+	"Portuguese": 
+		{"Play": "Jogar", 
+		"Language": "Linguagem", 
+		"Progress": "Progresso",
+		"English": "Inglês",
+		"Portuguese": "Português",
+		"Back": "Retroceder",
+		"Stage 1": "Etapa 1",
+		"Stage 2": "Etapa 2",
+		"Stage 3": "Etapa 3"
+		},
+	"English":
+		{"Play": "Play", 
+		"Language": "Language", 
+		"Progress": "Progress",
+		"English": "English",
+		"Portuguese": "Portuguese",
+		"Back": "Back",
+		"Stage 1": "Stage 1",
+		"Stage 2": "Stage 2",
+		"Stage 3": "Stage 3"
+		}
+}
