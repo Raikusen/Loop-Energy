@@ -35,7 +35,7 @@ public class ButtonData : MonoBehaviour
 
             //change the game's current language
             JsonManager.instance.currentTextLanguage = buttonName;
-            StartMenuNavigator.instance.changeTextLanguage(buttonName);
+            StartMenuNavigator.instance.ChangeTextLanguage(buttonName);
 
             //save the current language on the Unity PlayerPrefs for future acess
             if (PlayerPrefs.HasKey("language"))

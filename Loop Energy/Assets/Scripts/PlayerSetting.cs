@@ -25,7 +25,7 @@ public class PlayerSetting : MonoBehaviour
             "PlayerPrefs langauge text");
 
             JsonManager.instance.currentTextLanguage = PlayerPrefs.GetString("language");
-            StartMenuNavigator.instance.changeTextLanguageMainMenu(JsonManager.instance.currentTextLanguage);
+            StartMenuNavigator.instance.ChangeTextLanguageMainMenu(JsonManager.instance.currentTextLanguage);
         }
     }
 }

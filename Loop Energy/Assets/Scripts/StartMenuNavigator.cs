@@ -83,9 +83,9 @@ public class StartMenuNavigator : MonoBehaviour
 
         if(value == true)
         {
-            checkButtonTextLanguage(playButton);
-            checkButtonTextLanguage(languageButton);
-            checkButtonTextLanguage(progressButton);
+            CheckButtonTextLanguage(playButton);
+            CheckButtonTextLanguage(languageButton);
+            CheckButtonTextLanguage(progressButton);
         }
     }
 
@@ -96,8 +96,8 @@ public class StartMenuNavigator : MonoBehaviour
 
         if (value == true)
         {
-            checkButtonTextLanguage(englishLanguageButton);
-            checkButtonTextLanguage(portugueseLanguageButton);
+            CheckButtonTextLanguage(englishLanguageButton);
+            CheckButtonTextLanguage(portugueseLanguageButton);
         }
     }
 
@@ -109,9 +109,9 @@ public class StartMenuNavigator : MonoBehaviour
 
         if (value == true)
         {
-            checkButtonTextLanguage(stage_1_Button);
-            checkButtonTextLanguage(stage_2_Button);
-            checkButtonTextLanguage(stage_3_Button);
+            CheckButtonTextLanguage(stage_1_Button);
+            CheckButtonTextLanguage(stage_2_Button);
+            CheckButtonTextLanguage(stage_3_Button);
         }
     }
 
@@ -120,25 +120,25 @@ public class StartMenuNavigator : MonoBehaviour
         backButton.gameObject.SetActive(value);
 
         if(value == true)
-            checkButtonTextLanguage(backButton);
+            CheckButtonTextLanguage(backButton);
     }
 
-    public void changeTextLanguage(string language)
+    public void ChangeTextLanguage(string language)
     {
-        checkButtonTextLanguage(englishLanguageButton);
-        checkButtonTextLanguage(portugueseLanguageButton);
-        checkButtonTextLanguage(backButton);
+        CheckButtonTextLanguage(englishLanguageButton);
+        CheckButtonTextLanguage(portugueseLanguageButton);
+        CheckButtonTextLanguage(backButton);
     }
 
-    public void changeTextLanguageMainMenu(string language)
+    public void ChangeTextLanguageMainMenu(string language)
     {
-        checkButtonTextLanguage(playButton);
-        checkButtonTextLanguage(languageButton);
-        checkButtonTextLanguage(progressButton);
+        CheckButtonTextLanguage(playButton);
+        CheckButtonTextLanguage(languageButton);
+        CheckButtonTextLanguage(progressButton);
     }
 
     //function for changing the text language of a button
-    public void checkButtonTextLanguage(Button button)
+    public void CheckButtonTextLanguage(Button button)
     {
         tempButtonData = button.GetComponent<ButtonData>();
 

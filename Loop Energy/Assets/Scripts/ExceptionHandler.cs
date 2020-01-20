@@ -26,4 +26,9 @@ public class ExceptionHandler : MonoBehaviour
             throw new ArgumentNullException(exceptionMessage);
         }       
     }
+
+    public void NullReferenceException(string message)
+    {
+        throw new NullReferenceException(message);
+    }
 }
