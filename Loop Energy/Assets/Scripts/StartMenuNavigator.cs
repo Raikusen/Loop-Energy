@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 //class responsible for the navigation of the menu buttons
 public class StartMenuNavigator : MonoBehaviour
@@ -175,7 +176,7 @@ public class StartMenuNavigator : MonoBehaviour
     public void ActivationForStageButtons(bool value)
     {
         //there is an increment to load the stages the player has completed
-        int stagesCompleted = PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY) + 10;
+        int stagesCompleted = PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY) + 1;
 
         if (stagesCompleted >= 1)
             stage_1_Button.gameObject.SetActive(value);
@@ -210,6 +211,10 @@ public class StartMenuNavigator : MonoBehaviour
 
         //current stage selected is equal to the stage recieved
         currentStageSelected = stage;
+
+        //updating the currentStage key
+        PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_KEY, currentStageSelected);
+        PlayerPrefs.Save();
 
         int totalGameStages = StageManager.instance.GetTotalLevelsFromStage(stage);
         int currentLevelPage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_PAGE_KEY);
@@ -252,9 +257,26 @@ public class StartMenuNavigator : MonoBehaviour
                 
         }
 
+        bool stageIsCompleted = StageManager.instance.checkIfStageIsCompleted(stage);
+        int currentLevelOnStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
+
+        bool breakLevelPositioning = false;
+
+        if (stageIsCompleted == true)
+            breakLevelPositioning = true;
+
         //showing the corresponding buttons of a stage on the current level page
         while (i < levelButtonsToShow)
         {
+            //check for a better fix
+            if (((i + 1) + (currentLevelPage - 1) * levelButtonArray.Length) <= currentLevelOnStage)
+                breakLevelPositioning = true;
+
+            else breakLevelPositioning = false;
+
+            if (breakLevelPositioning == false)
+                break;
+
             levelButtonArray[i].gameObject.SetActive(value);
 
             if(value == true)
@@ -281,7 +303,8 @@ public class StartMenuNavigator : MonoBehaviour
         if (value == true)
         {
 
-            if (totalGameStages > (currentLevelPage * levelButtonArray.Length))
+            if (totalGameStages > (currentLevelPage * levelButtonArray.Length) &&
+                currentLevelOnStage > (currentLevelPage * levelButtonArray.Length))
             {
                 nextStageLevelsButton.gameObject.SetActive(value);
                 CheckButtonTextLanguage(nextStageLevelsButton);
@@ -429,5 +452,11 @@ public class StartMenuNavigator : MonoBehaviour
 
         //updating the stage level buttons to be shown
         ActivationForLevelButtons(currentStageSelected);
+    }
+
+    //loading the game scene
+    public void LoadGameScene()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }

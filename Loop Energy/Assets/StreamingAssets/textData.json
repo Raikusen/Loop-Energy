@@ -13,7 +13,8 @@
 		"PreviousLevel": "Níveis\nanteriores",
 		"NextLevel": "Níveis\nseguintes",
 		"Completed Stages": "Etapas Completadas",
-		"Completed Levels": "Níves Completados"
+		"Completed Levels": "Níves Completados",
+		"Quit": "Sair"
 		},
 	"English":
 		{"Play": "Play", 
@@ -29,6 +30,7 @@
 		"PreviousLevel": "Previous\nlevels",
 		"NextLevel": "Next\nlevels",
 		"Completed Stages": "Completed Stages",
-		"Completed Levels": "Completed Levels"
+		"Completed Levels": "Completed Levels",
+		"Quit": "Quit"
 		}
 }

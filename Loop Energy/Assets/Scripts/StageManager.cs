@@ -43,4 +43,17 @@ public class StageManager : MonoBehaviour
 
         return levelsPerStageArray[(stage - 1)];   
     }
+
+    public bool checkIfStageIsCompleted(int stage)
+    {
+        if (stage < 0 || (levelsPerStageArray.Length + 1) <= stage)
+            Debug.LogError("stage number or arraay length are incorrect. " + stage);
+
+        int completedStages = PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY);
+
+        if (completedStages >= stage)
+            return true;
+
+        else return false;
+    }
 }
