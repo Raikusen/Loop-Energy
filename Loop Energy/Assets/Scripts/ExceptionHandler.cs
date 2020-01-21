@@ -27,6 +27,7 @@ public class ExceptionHandler : MonoBehaviour
         }       
     }
 
+    //if a determinated object is null, throw a given message
     public void NullReferenceException(string message)
     {
         throw new NullReferenceException(message);

@@ -8,7 +8,12 @@
 		"Back": "Retroceder",
 		"Stage 1": "Etapa 1",
 		"Stage 2": "Etapa 2",
-		"Stage 3": "Etapa 3"
+		"Stage 3": "Etapa 3",
+		"Level": "Nível",
+		"PreviousLevel": "Níveis\nanteriores",
+		"NextLevel": "Níveis\nseguintes",
+		"Completed Stages": "Etapas Completadas",
+		"Completed Levels": "Níves Completados"
 		},
 	"English":
 		{"Play": "Play", 
@@ -19,6 +24,11 @@
 		"Back": "Back",
 		"Stage 1": "Stage 1",
 		"Stage 2": "Stage 2",
-		"Stage 3": "Stage 3"
+		"Stage 3": "Stage 3",
+		"Level": "Level",
+		"PreviousLevel": "Previous\nlevels",
+		"NextLevel": "Next\nlevels",
+		"Completed Stages": "Completed Stages",
+		"Completed Levels": "Completed Levels"
 		}
 }

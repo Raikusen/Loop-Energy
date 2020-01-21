@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//class that contains the audio source of a button click
 public class AudioManager : MonoBehaviour
 {
     //audio source containing the button audio clip

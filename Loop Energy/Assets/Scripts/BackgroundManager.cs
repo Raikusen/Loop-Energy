@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//class responsible for changing the camera background
 public class BackgroundManager : MonoBehaviour
 {
     [SerializeField]
@@ -34,16 +35,5 @@ public class BackgroundManager : MonoBehaviour
     public void ChangeBackgroundColorStage3()
     {
         GameCamera.backgroundColor = Color.red;
-    }
-
-    //try to change
-    public void setCameraBackgroundColor(float r, float g, float b)
-    {
-        cameraBackgroundColor.r = r;
-        cameraBackgroundColor.g = g;
-        cameraBackgroundColor.b = b;
-        cameraBackgroundColor.a = 255;
-
-        GameCamera.backgroundColor = cameraBackgroundColor;
     }
 }

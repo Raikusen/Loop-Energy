@@ -14,6 +14,9 @@ public class ButtonData : MonoBehaviour
     [HideInInspector]
     public string buttonTextLanguage = "English";
 
+    //needed for stage level buttons
+    public bool refreshButtonText = false;
+
     //button component of the game objects using this script
     private Button classButton;
 
@@ -38,9 +41,9 @@ public class ButtonData : MonoBehaviour
             StartMenuNavigator.instance.ChangeTextLanguage(buttonName);
 
             //save the current language on the Unity PlayerPrefs for future acess
-            if (PlayerPrefs.HasKey("language"))
+            if (PlayerPrefs.HasKey(PlayerSetting.LANGUAGE_KEY))
             {
-                PlayerPrefs.SetString("language", buttonName);
+                PlayerPrefs.SetString(PlayerSetting.LANGUAGE_KEY, buttonName);
                 PlayerPrefs.Save();
             }
         }
