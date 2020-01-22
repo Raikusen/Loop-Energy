@@ -67,9 +67,6 @@ public class StartMenuNavigator : MonoBehaviour
 
     private ButtonData tempButtonData;
 
-    //string information for a button, that is retrieved on the textData.json file
-    private string tempTextData;
-
     //if there are stage level buttons being shown
     private bool stageLevelsBeingShown = false;
 
@@ -357,37 +354,8 @@ public class StartMenuNavigator : MonoBehaviour
         tempButtonData = button.GetComponent<ButtonData>();
 
         if(tempButtonData != null)
-        {
-            //if button exists and the button text language is not the same as the current game language,
-            //change the button text language
-            if(!(string.Equals(tempButtonData.buttonTextLanguage,
-                JsonManager.instance.currentTextLanguage)) || tempButtonData.refreshButtonText == true)
-            {
-                string currentLanguage = JsonManager.instance.currentTextLanguage;
+            JsonManager.instance.CheckButtonTextLanguageJSON(button, tempButtonData);
 
-                //see if currentTextLanguage string is valid
-                ExceptionHandler.instance.StringNullOrWhiteException(currentLanguage,
-                "there is not a game language defined.");
-
-                //updating the button text language to be equal to the game's current language
-                tempButtonData.buttonTextLanguage = currentLanguage;
-
-                //getting the string of the language information for the button recieved on this function
-                tempTextData = JsonManager.instance.textData[currentLanguage][tempButtonData.buttonName].ToString();
-
-                //checking if the text JSON file has informaation about the given button
-                ExceptionHandler.instance.StringNullOrWhiteException(tempTextData,
-                "there is not information defined in the text JSON file, for the button " + tempButtonData.buttonName);
-
-                //changing the button text, according to the textData.json file information
-                button.GetComponentInChildren<Text>().text = tempTextData;
-
-                //hack for refreshing stage level buttons
-                if (tempButtonData.refreshButtonText == true)
-                    tempButtonData.refreshButtonText = false;
-            }
-             
-        }
     }
 
     private void ActiationForProgressText(bool value)

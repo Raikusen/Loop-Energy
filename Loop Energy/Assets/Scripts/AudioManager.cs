@@ -38,4 +38,10 @@ public class AudioManager : MonoBehaviour
     {
         buttonClickAudio.Play();
     }
+
+    public void DestroyAudioManagerInstance()
+    {
+        if (instance != null)
+            Destroy(gameObject);
+    }
 }

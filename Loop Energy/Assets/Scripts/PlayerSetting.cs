@@ -12,6 +12,7 @@ public class PlayerSetting : MonoBehaviour
     public const string CURRENT_LEVEL_KEY = "currentLevel";
     public const string TOTAL_LEVELS_COMPLETED_KEY = "levelsCompleted";
     public const string CURRENT_LEVEL_PAGE_KEY = "currentStageLevelsPage";
+    public const string CAMERA_BACKGROUND_COLOR = "cameraBackgroundColor";
 
     void Start()
     {
@@ -89,6 +90,15 @@ public class PlayerSetting : MonoBehaviour
         if (!PlayerPrefs.HasKey(key))
         {
             PlayerPrefs.SetInt(key, value);
+            PlayerPrefs.Save();
+        }
+    }
+
+    private void CheckCameraBackgroundColorKey()
+    {
+        if (!PlayerPrefs.HasKey(CAMERA_BACKGROUND_COLOR))
+        {
+            PlayerPrefs.SetString(CAMERA_BACKGROUND_COLOR, "blue");
             PlayerPrefs.Save();
         }
     }
