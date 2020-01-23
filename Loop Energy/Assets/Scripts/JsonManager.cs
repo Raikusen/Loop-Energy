@@ -2,20 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using LitJson;
 
 //claass that reads the information of the JSON files present on this game
 public class JsonManager : MonoBehaviour
 {
-    private string textFilePath;
+    private string readFilePath;
     private string textFileName = "textData.json";
+    private string levelFileName = "levelData.json";
 
     //string information of the json file loaded
-    private string jsonContents;
+    private string jsonTextContents;
+
+    private string jsonLevelContents;
 
     //the data from the text json file, that can be found on the json text data file loaded
     [HideInInspector]
     public JsonData textData;
+
+    //the data from the level json file, that can be found on the json level data file loaded
+    [HideInInspector]
+    public JsonData levelData;
 
     //the language being currently used on the game
     [HideInInspector]
@@ -24,9 +32,8 @@ public class JsonManager : MonoBehaviour
     //singleton instance of this class
     [HideInInspector] public static JsonManager instance;
 
+    //temporary string used to store the text of a game button
     private string tempTextData;
-
-    public bool reloadTextFile = false;
 
     void Awake()
     {
@@ -35,29 +42,72 @@ public class JsonManager : MonoBehaviour
 
         instance = this;
 
+        //load text language file and levels data file
         LoadTextJSONFileData();
+        LoadLevelJSONFileData();
 
+        //this object is not destroyed so it can be used on the game scene
         DontDestroyOnLoad(instance);
     }
 
     //loading the information present on the language text JSON file
-    private void LoadJSONFile(string filePath)
+    private void LoadJSONTextFile(string filePath)
     {
+        //using Unity Web Request to load JSON file information from android
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(filePath);
+            www.SendWebRequest();
+            while (!www.isDone)
+            {
+            }
+            jsonTextContents = www.downloadHandler.text;
+        }
+        else
+        {
+            jsonTextContents = System.IO.File.ReadAllText(filePath);
+        }
+    }
 
-        //reading the information present on the json file
-        jsonContents = System.IO.File.ReadAllText(filePath);
+    private void LoadJSONLevelFile(string filePath)
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            UnityEngine.Networking.UnityWebRequest www = UnityEngine.Networking.UnityWebRequest.Get(filePath);
+            www.SendWebRequest();
+            while (!www.isDone)
+            {
+            }
+            jsonLevelContents = www.downloadHandler.text;
+        }
+        else
+        {
+            jsonLevelContents = System.IO.File.ReadAllText(filePath);
+        }
     }
 
     public void LoadTextJSONFileData()
     {
         //loading text file data
-        textFilePath = Application.streamingAssetsPath + "/" + textFileName;
+        readFilePath = Application.streamingAssetsPath + "/" + textFileName;
 
-        LoadJSONFile(textFilePath);
+        LoadJSONTextFile(readFilePath);
 
         //passing that information as a JsonData object 
-        if (jsonContents != null)
-            textData = JsonMapper.ToObject(jsonContents);
+        if (jsonTextContents != null)
+            textData = JsonMapper.ToObject(jsonTextContents);
+    }
+
+    public void LoadLevelJSONFileData()
+    {
+        //loading text file data
+        readFilePath = Application.streamingAssetsPath + "/" + levelFileName;
+
+        LoadJSONLevelFile(readFilePath);
+
+        //passing that information as a JsonData object 
+        if (jsonLevelContents != null)
+            levelData = JsonMapper.ToObject(jsonLevelContents);
     }
 
     public void CheckButtonTextLanguageJSON(Button button, ButtonData buttonData)
@@ -77,7 +127,7 @@ public class JsonManager : MonoBehaviour
             buttonData.buttonTextLanguage = currentLanguage;
 
             //getting the string of the language information for the button recieved on this function
-            tempTextData = JsonManager.instance.textData[currentLanguage][buttonData.buttonName].ToString();
+            tempTextData = textData[currentLanguage][buttonData.buttonName].ToString();
 
             //checking if the text JSON file has informaation about the given button
             ExceptionHandler.instance.StringNullOrWhiteException(tempTextData,

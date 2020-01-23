@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//temp, needed for handling exceptions
+// needed for handling exceptions
 using System;
 
 public class ExceptionHandler : MonoBehaviour

@@ -1,0 +1,59 @@
+{
+	"Stage 1":
+	{
+		"Level 1":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","circle"]
+			}
+		],
+		"Level 2":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","circle"]
+			}
+		]
+	}
+}

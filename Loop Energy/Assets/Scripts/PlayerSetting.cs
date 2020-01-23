@@ -94,6 +94,7 @@ public class PlayerSetting : MonoBehaviour
         }
     }
 
+    //the current color of the camera background
     private void CheckCameraBackgroundColorKey()
     {
         if (!PlayerPrefs.HasKey(CAMERA_BACKGROUND_COLOR))

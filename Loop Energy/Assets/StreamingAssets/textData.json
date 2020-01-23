@@ -19,7 +19,8 @@
 		"Previous Level": "Nível\nAnterior",
 		"Next Level": "Nível\nSeguinte",
 		"Resume Level": "Resumir\nNível",
-		"Restart Level": "Recomeçar\nNível"
+		"Restart Level": "Recomeçar\nNível",
+		"Level Completed": "Nível Completo"
 		},
 	"English":
 		{"Play": "Play", 
@@ -41,6 +42,7 @@
 		"Previous Level": "Previous\nLevel",
 		"Next Level": "Next\nLevel",
 		"Resume Level": "Resume\nLevel",
-		"Restart Level": "Restart\nLevel"
+		"Restart Level": "Restart\nLevel",
+		"Level Completed": "Level Completed"
 		}
 }

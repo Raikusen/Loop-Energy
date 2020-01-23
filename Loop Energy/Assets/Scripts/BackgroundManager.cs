@@ -21,31 +21,33 @@ public class BackgroundManager : MonoBehaviour
     {
         GameCamera.backgroundColor = Color.blue;
 
-        PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, "blue");
-        PlayerPrefs.Save();
+        SaveColor("blue");
     }
 
     public void ChangeBackgroundColorStage1()
     {
         GameCamera.backgroundColor = Color.yellow;
 
-        PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, "yellow");
-        PlayerPrefs.Save();
+        SaveColor("yellow");
     }
 
     public void ChangeBackgroundColorStage2()
     {
         GameCamera.backgroundColor = Color.green;
 
-        PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, "green");
-        PlayerPrefs.Save();
+        SaveColor("green");
     }
 
     public void ChangeBackgroundColorStage3()
     {
         GameCamera.backgroundColor = Color.red;
 
-        PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, "red");
+        SaveColor("red");
+    }
+
+    public void SaveColor(string colorString)
+    {
+        PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, colorString);
         PlayerPrefs.Save();
     }
 }

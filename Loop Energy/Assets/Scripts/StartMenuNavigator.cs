@@ -265,7 +265,7 @@ public class StartMenuNavigator : MonoBehaviour
         //showing the corresponding buttons of a stage on the current level page
         while (i < levelButtonsToShow)
         {
-            //check for a better fix
+            //see if there are still more buttons to be created or not
             if (((i + 1) + (currentLevelPage - 1) * levelButtonArray.Length) <= currentLevelOnStage)
                 breakLevelPositioning = true;
 

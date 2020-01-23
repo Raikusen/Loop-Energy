@@ -22,18 +22,12 @@ public class PuzzlePiece : MonoBehaviour
     //eaasing of the piece while being moved
     private int speedEasing = 100;
 
+    //if a piece is currently moving
     private static bool moving = false;
 
-    //division line to separate the puzzle pieces and the game menu button
-    [SerializeField]
-    private GameObject divisionLine;
-
-    //the y limit where cannot move further than the value stipulated
-    private float limitYPiece;
-    private float limitYCutoff = 0.5f;
-
+    //index of piece on the puzzle pieces list
     [HideInInspector]
-    public int ID;
+    public int puzzlePiecesIndex;
 
     //if the piece is colliding with another piece or not
     private bool colliding = false;
@@ -47,17 +41,39 @@ public class PuzzlePiece : MonoBehaviour
     //getting the spriteRender of the game object, for changing layer order
     private SpriteRenderer spriteRenderer;
 
-    void Start()
+    //images relative to the state the piece is currently in
+    [SerializeField]
+    private Sprite normalPieceSprite;
+
+    [SerializeField]
+    private Sprite lightPieceSprite;
+
+    [SerializeField]
+    private Sprite pressedPieceSprite;
+
+    //maximum Y value the piece can achieve
+    private float limitYPiece;
+
+    //the piece prefb type
+    private string pieceType;
+
+    private bool pieceIsInCorrectPosition = false;
+
+    void Awake()
     {
         currentStationaryPosition = transform.position;
 
-        limitYPiece = divisionLine.transform.position.y - limitYCutoff;
-
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        limitYPiece = GameManager.instance.limitYPiece;
     }
 
     void Update()
     {
+        //if the game is not playble, stop input events on the pieces
+        if (GameManager.instance.GetGameIsPlayable() == false)
+            return;
+
         //if the player made a click on the mobile device
         if (SystemInfo.deviceType == DeviceType.Handheld && Input.touchCount == 1 && pieceBeingHold == false
             && (moving == false || pieceBeingHold == true))
@@ -77,7 +93,7 @@ public class PuzzlePiece : MonoBehaviour
                 //if the player is moving his finger
                 case TouchPhase.Moved:
                     if (GetComponent<BoxCollider2D>() == Physics2D.OverlapPoint(touchPosition) &&
-                        transform.position.y <= limitYPiece)
+                        transform.position.y <= GameManager.instance.limitYPiece)
                         MovePieceByInput();
                     break;
 
@@ -94,6 +110,7 @@ public class PuzzlePiece : MonoBehaviour
         {
             tempPos.x = Input.mousePosition.x;
             tempPos.y = Input.mousePosition.y;
+
             //get the touch position related to the world space
             touchPosition = Camera.main.ScreenToWorldPoint(tempPos);
 
@@ -138,6 +155,9 @@ public class PuzzlePiece : MonoBehaviour
                 collision.gameObject.transform.position = grabbedPiecePosition;
                 tempPuzzlePiece.currentStationaryPosition = grabbedPiecePosition;
 
+                //check result of trading the position of the two pieces
+                GameManager.instance.CheckTradePieces(this, tempPuzzlePiece);
+
                 SetPieceMovement(false);
             }
         }
@@ -159,8 +179,20 @@ public class PuzzlePiece : MonoBehaviour
         //if the piece is moving, increase the layer order for the grabbed piece appearing 
         //first on the screen when colliding with other pieces
         if (value == true)
+        {
             spriteRenderer.sortingOrder = 2;
-        else spriteRenderer.sortingOrder = 1;
+            ChangeToPressedSprite();
+        }
+
+        else
+        {
+            spriteRenderer.sortingOrder = 1;
+
+            if(pieceIsInCorrectPosition == false)
+                ChangeToNormalSprite();
+
+            else ChangeToLightSprite();
+        }
     }
 
     //moving a piece based on the input or touch position
@@ -171,7 +203,7 @@ public class PuzzlePiece : MonoBehaviour
         transform.position = Vector2.Lerp(transform.position, touchPosition, speedEasing * Time.deltaTime);
 
         //if piece y position is greater than the YLimit, return to previous frame position 
-        if (transform.position.y > limitYPiece)
+        if (transform.position.y > GameManager.instance.limitYPiece)
             transform.position = tempPos;
     }
 
@@ -180,5 +212,46 @@ public class PuzzlePiece : MonoBehaviour
     {
         SetPieceMovement(false);
         transform.position = currentStationaryPosition;
+    }
+
+    //changing the puzzle piece sprite image, according to the game events
+    public void ChangeToNormalSprite()
+    {
+        spriteRenderer.sprite = normalPieceSprite;
+    }
+
+    public void ChangeToLightSprite()
+    {
+        spriteRenderer.sprite = lightPieceSprite;
+    }
+
+    public void ChangeToPressedSprite()
+    {
+        spriteRenderer.sprite = pressedPieceSprite;
+    }
+
+    public static bool GetPiecesAreMoving()
+    {
+        return moving;
+    }
+
+    public string GetPieceType()
+    {
+        return pieceType;
+    }
+
+    public void SetPieceType(string type)
+    {
+        pieceType = type;
+    }
+
+    public bool GetPieceIsInCorrectPosition()
+    {
+        return pieceIsInCorrectPosition;
+    }
+
+    public void SetPieceIsInCorrectPosition(bool value)
+    {
+        pieceIsInCorrectPosition = value;
     }
 }

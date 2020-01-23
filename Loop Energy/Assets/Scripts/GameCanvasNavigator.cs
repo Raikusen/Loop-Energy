@@ -35,8 +35,19 @@ public class GameCanvasNavigator : MonoBehaviour
     [SerializeField]
     private Camera gameCamera;
 
+    [SerializeField]
+    private Text levelCompletedText;
+
+    //singleton instance of this class
+    [HideInInspector] public static GameCanvasNavigator instance;
+
     void Awake()
     {
+        if (instance != null && instance != this)
+            Destroy(gameObject);
+
+        instance = this;
+
         LoadBackgroundColorCamera();
     }
 
@@ -58,10 +69,19 @@ public class GameCanvasNavigator : MonoBehaviour
 
     public void ActivateGameMenuButtons(bool value)
     {
+        //do not activate game menu buttons if a piece is moving
+        if (value == true && (PuzzlePiece.GetPiecesAreMoving() == true ||
+            GameManager.instance.GetGameIsPlayable() == false))
+            return;
+
+        //game and menu button are disabled if true
+        GameManager.instance.SetGameIsPlayable(!value);
+
         gameMenuButton.gameObject.SetActive(!value);
 
         gameMenuPanel.gameObject.SetActive(value);
 
+        //menu buttons are enabled if true
         previousLevelButton.gameObject.SetActive(value);
         nextLevelButton.gameObject.SetActive(value);
         quitButton.gameObject.SetActive(value);
@@ -96,13 +116,42 @@ public class GameCanvasNavigator : MonoBehaviour
 
     }
 
-    //review function
+    public void ActivateLevelCompletedText(bool value)
+    {
+        levelCompletedText.gameObject.SetActive(value);
+
+        if(value == true)
+        {
+            string currentLanguage = JsonManager.instance.currentTextLanguage;
+
+            string levelMessage = JsonManager.instance.textData[currentLanguage]["Level Completed"].ToString();
+
+            if (levelMessage != null)
+                levelCompletedText.text = levelMessage;
+        }
+
+    }
+
+    public void CompletedLevel()
+    {
+        //add part of stage
+
+        //review part of previous and next level
+
+        GameManager.instance.SetGameIsPlayable(true);
+
+        ActivateLevelCompletedText(true);
+        ActivateGameMenuButtons(true);
+
+        GameManager.instance.SetGameIsPlayable(false);
+    }
+
     private void LoadBackgroundColorCamera()
     {
         if (gameCamera == null)
             ExceptionHandler.instance.NullReferenceException("there is not a camera associated to the Background Manager.");
 
-        string cameraColor = PlayerPrefs.GetString("cameraBackgroundColor");
+        string cameraColor = PlayerPrefs.GetString(PlayerSetting.CAMERA_BACKGROUND_COLOR);
 
         if (cameraColor != null)
             switch(cameraColor)
