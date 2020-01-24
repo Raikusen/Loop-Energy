@@ -10,15 +10,20 @@ public class PlayerSetting : MonoBehaviour
     public const string CURRENT_STAGE_KEY = "currentStage";
     public const string STAGES_COMPLETED_KEY = "stagesCompleted";
     public const string CURRENT_LEVEL_KEY = "currentLevel";
+    public const string CURRENT_STAGE_LEVEL_SELECTED_KEY = "currentStaageLevelSelected";
     public const string TOTAL_LEVELS_COMPLETED_KEY = "levelsCompleted";
     public const string CURRENT_LEVEL_PAGE_KEY = "currentStageLevelsPage";
     public const string CAMERA_BACKGROUND_COLOR = "cameraBackgroundColor";
 
     void Start()
     {
+        //for testing purposes
+        //PlayerPrefs.DeleteAll();
+
         CheckLanguageKey();
 
         CheckCurrentStageKey();
+        CheckCurrentStageLevelKey();
         CheckStagesCompletedKey();
 
         CheckCurrentLevelKey();
@@ -68,6 +73,12 @@ public class PlayerSetting : MonoBehaviour
     private void CheckCurrentLevelKey()
     {
         CheckIntegerKey(CURRENT_LEVEL_KEY, 1);
+    }
+
+    //the level being currently selected on the selected stage
+    private void CheckCurrentStageLevelKey()
+    {
+        CheckIntegerKey(CURRENT_STAGE_LEVEL_SELECTED_KEY, 0);
     }
 
     //the amount of levels completed,

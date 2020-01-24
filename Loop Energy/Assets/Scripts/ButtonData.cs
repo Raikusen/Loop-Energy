@@ -14,8 +14,12 @@ public class ButtonData : MonoBehaviour
     [HideInInspector]
     public string buttonTextLanguage = "English";
 
+    [HideInInspector]
     //needed for stage level buttons
     public bool refreshButtonText = false;
+
+    [HideInInspector]
+    public int buttonLevel = 0;
 
     //button component of the game objects using this script
     private Button classButton;

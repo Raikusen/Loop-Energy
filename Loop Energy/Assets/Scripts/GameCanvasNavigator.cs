@@ -41,6 +41,13 @@ public class GameCanvasNavigator : MonoBehaviour
     //singleton instance of this class
     [HideInInspector] public static GameCanvasNavigator instance;
 
+    private int currentLevel;
+    private int currentStage;
+    private int currenStageLevelSelected;
+    private int totalLevelsAvailable;
+    private int totalLevelsCompleted;
+    private int levelNumberFromTotalLevels;
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -49,6 +56,11 @@ public class GameCanvasNavigator : MonoBehaviour
         instance = this;
 
         LoadBackgroundColorCamera();
+    }
+
+    void Start()
+    {
+        CalculateLevelNumberFromTotalLevels();
     }
 
     public void ReturnToMainMenu()
@@ -60,8 +72,13 @@ public class GameCanvasNavigator : MonoBehaviour
         //destroy instances that were passed by the previous scene
         JsonManager.instance.DestroyJSONInstance();
         AudioManager.instance.DestroyAudioManagerInstance();
+        StageManager.instance.DestroyStageManagerInstance();
 
         gameCamera.backgroundColor = Color.blue;
+
+        gameMenuPanel.gameObject.SetActive(true);
+
+        AudioManager.instance.StopLevelCompletedSound();
 
         //return to menu scene
         SceneManager.LoadScene("Menu");
@@ -82,22 +99,21 @@ public class GameCanvasNavigator : MonoBehaviour
         gameMenuPanel.gameObject.SetActive(value);
 
         //menu buttons are enabled if true
-        previousLevelButton.gameObject.SetActive(value);
-        nextLevelButton.gameObject.SetActive(value);
         quitButton.gameObject.SetActive(value);
         resumeLevelButton.gameObject.SetActive(value);
         restartLevelButton.gameObject.SetActive(value);
 
         if (value == true)
         {
-            CheckButtonTextLanguage(previousLevelButton);
-            CheckButtonTextLanguage(nextLevelButton);
             CheckButtonTextLanguage(quitButton);
             CheckButtonTextLanguage(resumeLevelButton);
             CheckButtonTextLanguage(restartLevelButton);
         }
 
         else CheckButtonTextLanguage(gameMenuButton);
+
+        CheckPreviousButtonActivation(value);
+        CheckNextButtonActivation(value);
     }
 
     public void ClickButtonSound()
@@ -137,13 +153,170 @@ public class GameCanvasNavigator : MonoBehaviour
         //add part of stage
 
         //review part of previous and next level
+        AudioManager.instance.PlayLevelCompletedSound();
 
         GameManager.instance.SetGameIsPlayable(true);
 
         ActivateLevelCompletedText(true);
+
+        if (levelNumberFromTotalLevels > totalLevelsCompleted && totalLevelsCompleted < totalLevelsAvailable)
+        {
+            PlayerPrefs.SetInt(PlayerSetting.TOTAL_LEVELS_COMPLETED_KEY, levelNumberFromTotalLevels );
+            PlayerPrefs.Save();
+
+            bool stageIsCompleted = StageManager.instance.CheckIfStageIsCompleted(currentStage);
+
+            //CHECK
+            if(stageIsCompleted == false)
+            {
+                int currLevKeyValue = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
+                currLevKeyValue++;
+
+                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, currLevKeyValue);
+                
+
+                int completedStages = PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY);
+
+                if (completedStages < currentStage 
+                    && currenStageLevelSelected == StageManager.instance.GetTotalLevelsFromStage(currentStage))
+                {
+                    Debug.Log("stage is completed");
+                    PlayerPrefs.SetInt(PlayerSetting.STAGES_COMPLETED_KEY, completedStages + 1);
+                    PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, 1);
+                }
+
+                PlayerPrefs.Save();
+
+            }
+            
+
+            totalLevelsCompleted = levelNumberFromTotalLevels;
+        }
+
         ActivateGameMenuButtons(true);
 
+        resumeLevelButton.gameObject.SetActive(false);
+
         GameManager.instance.SetGameIsPlayable(false);
+
+    }
+
+    private void CheckPreviousButtonActivation(bool value)
+    {
+        if (value == false)
+        {
+            previousLevelButton.gameObject.SetActive(false);
+            return;
+        }
+
+        if (levelNumberFromTotalLevels > 1 && levelNumberFromTotalLevels <= totalLevelsAvailable)
+        {
+            previousLevelButton.gameObject.SetActive(true);
+            CheckButtonTextLanguage(previousLevelButton);
+        }
+    }
+
+    private void CheckNextButtonActivation(bool value)
+    {
+        if (value == false)
+        {
+            nextLevelButton.gameObject.SetActive(false);
+            return;
+        }
+
+        if (levelNumberFromTotalLevels < totalLevelsAvailable && totalLevelsCompleted >= levelNumberFromTotalLevels)
+        {
+            nextLevelButton.gameObject.SetActive(true);
+            CheckButtonTextLanguage(nextLevelButton); 
+        }
+    }
+
+    public void GoToPreviousLevel()
+    {
+        int previousLevel = currenStageLevelSelected - 1;
+        int stageSelected = currentStage;
+
+        bool loadLevelSuccess = false;
+
+        if(previousLevel > 0)
+        {
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY, previousLevel);
+            PlayerPrefs.Save();
+
+            loadLevelSuccess = true;
+        }
+
+        else if(previousLevel == 0 && stageSelected > 1)
+        {
+            stageSelected -= 1;
+
+            int totalLevelsFromPreviouStage = StageManager.instance.GetTotalLevelsFromStage(stageSelected);
+
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_KEY, stageSelected);
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY, totalLevelsFromPreviouStage);
+            PlayerPrefs.Save();
+
+            loadLevelSuccess = true;
+        }
+
+        if (loadLevelSuccess == true)
+        {
+            CalculateLevelNumberFromTotalLevels();
+            AudioManager.instance.StopLevelCompletedSound();
+            GameManager.instance.ResetLevel();
+        }
+    }
+
+    public void GoToNextLevel()
+    {
+        int nextLevel = currenStageLevelSelected + 1;
+        int stageSelected = currentStage;
+
+        bool loadLevelSuccess = false;
+
+        if (currentStage < StageManager.instance.GetGameTotalStages() &&
+            nextLevel > StageManager.instance.GetTotalLevelsFromStage(currentStage))
+        {
+            stageSelected += 1;
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_KEY, stageSelected);
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY, 1);
+
+            bool stageIsComplete = StageManager.instance.CheckIfStageIsCompleted(stageSelected);
+
+            if(stageIsComplete == false)
+                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, 1);
+
+            PlayerPrefs.Save();
+
+            loadLevelSuccess = true;
+        }
+
+        else if (nextLevel > 0 && nextLevel <= totalLevelsAvailable)
+        {
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY, nextLevel);
+            PlayerPrefs.Save();
+
+            loadLevelSuccess = true;
+        }
+
+        if (loadLevelSuccess == true)
+        {
+            CalculateLevelNumberFromTotalLevels();
+            AudioManager.instance.StopLevelCompletedSound();
+            GameManager.instance.ResetLevel();
+        }
+    }
+
+    private void CalculateLevelNumberFromTotalLevels()
+    {
+        currentLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
+        currentStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
+        currenStageLevelSelected = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY);
+        totalLevelsAvailable = StageManager.instance.GetGameTotalLevels();
+        totalLevelsCompleted = PlayerPrefs.GetInt(PlayerSetting.TOTAL_LEVELS_COMPLETED_KEY);
+
+        levelNumberFromTotalLevels = StageManager.instance.GetStageLevelNubmerFromTotalLevels(currentStage,
+            currenStageLevelSelected);
     }
 
     private void LoadBackgroundColorCamera()

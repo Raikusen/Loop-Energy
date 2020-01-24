@@ -45,6 +45,24 @@ public class BackgroundManager : MonoBehaviour
         SaveColor("red");
     }
 
+    public void CheckChangeOnBackgroundCameraOnStage()
+    {
+        int stage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
+
+        switch(stage)
+        {
+            case 1:
+                ChangeBackgroundColorStage1();
+                break;
+            case 2:
+                ChangeBackgroundColorStage2();
+                break;
+            case 3:
+                ChangeBackgroundColorStage3();
+                break;
+        }
+    }
+
     public void SaveColor(string colorString)
     {
         PlayerPrefs.SetString(PlayerSetting.CAMERA_BACKGROUND_COLOR, colorString);

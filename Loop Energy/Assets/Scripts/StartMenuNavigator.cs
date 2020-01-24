@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 //class responsible for the navigation of the menu buttons
 public class StartMenuNavigator : MonoBehaviour
@@ -107,10 +108,10 @@ public class StartMenuNavigator : MonoBehaviour
 
     public void ChangeToLanguageMenu()
     {
+        ActivationForBackButton(true);
+
         ActivationForStartingMenuButtons(false);
         ActivationForLanguageButtons(true);
-
-        ActivationForBackButton(true);
     }
 
     public void ChangeToMainMenuButtons()
@@ -209,6 +210,12 @@ public class StartMenuNavigator : MonoBehaviour
         //current stage selected is equal to the stage recieved
         currentStageSelected = stage;
 
+        //if old and current stage are different, go to the first page
+        int oldStageSelected = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
+
+        if(currentStageSelected != oldStageSelected)
+            PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_PAGE_KEY, 1);
+       
         //updating the currentStage key
         PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_KEY, currentStageSelected);
         PlayerPrefs.Save();
@@ -254,13 +261,14 @@ public class StartMenuNavigator : MonoBehaviour
                 
         }
 
-        bool stageIsCompleted = StageManager.instance.checkIfStageIsCompleted(stage);
+        bool stageIsCompleted = StageManager.instance.CheckIfStageIsCompleted(stage);
+
         int currentLevelOnStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
 
         bool breakLevelPositioning = false;
 
-        if (stageIsCompleted == true)
-            breakLevelPositioning = true;
+        //if (stageIsCompleted == true)
+        //    breakLevelPositioning = true;
 
         //showing the corresponding buttons of a stage on the current level page
         while (i < levelButtonsToShow)
@@ -271,7 +279,7 @@ public class StartMenuNavigator : MonoBehaviour
 
             else breakLevelPositioning = false;
 
-            if (breakLevelPositioning == false)
+            if (breakLevelPositioning == false && stageIsCompleted == false)
                 break;
 
             levelButtonArray[i].gameObject.SetActive(value);
@@ -282,6 +290,8 @@ public class StartMenuNavigator : MonoBehaviour
 
                 //refreshing the text button, for deleating the previous number on the level button text
                 tempButtonData.refreshButtonText = true;
+
+                tempButtonData.buttonLevel = ((currentLevelPage - 1) * levelButtonArray.Length) + (i + 1);
 
                 //change button language
                 CheckButtonTextLanguage(levelButtonArray[i]);
@@ -296,12 +306,12 @@ public class StartMenuNavigator : MonoBehaviour
 
         }
 
-        //showing next and previous sage buttons if needed
+        //showing next and previous stage buttons if needed
         if (value == true)
         {
 
             if (totalGameStages > (currentLevelPage * levelButtonArray.Length) &&
-                currentLevelOnStage > (currentLevelPage * levelButtonArray.Length))
+                (currentLevelOnStage > (currentLevelPage * levelButtonArray.Length) || stageIsCompleted == true))
             {
                 nextStageLevelsButton.gameObject.SetActive(value);
                 CheckButtonTextLanguage(nextStageLevelsButton);
@@ -378,10 +388,10 @@ public class StartMenuNavigator : MonoBehaviour
         completedStagesText.text = JsonManager.instance.textData[currentLanguage]["Completed Stages"].ToString();
         completedLevelsText.text = JsonManager.instance.textData[currentLanguage]["Completed Levels"].ToString();
 
-        tempStringMeessage = ": " + PlayerPrefs.GetInt(PlayerSetting.TOTAL_LEVELS_COMPLETED_KEY);
+        tempStringMeessage = ": " + PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY);
         completedStagesText.text += tempStringMeessage;
 
-        tempStringMeessage = ": " + PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY);
+        tempStringMeessage = ": " + PlayerPrefs.GetInt(PlayerSetting.TOTAL_LEVELS_COMPLETED_KEY);
         completedLevelsText.text += tempStringMeessage;
     }
 
@@ -425,6 +435,13 @@ public class StartMenuNavigator : MonoBehaviour
     //loading the game scene
     public void LoadGameScene()
     {
+        GameObject currentButton = EventSystem.current.currentSelectedGameObject;
+
+        ButtonData tempData = currentButton.GetComponent<ButtonData>();
+
+        PlayerPrefs.SetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY, tempData.buttonLevel);
+        PlayerPrefs.Save();
+
         SceneManager.LoadScene("GameScene");
     }
 }

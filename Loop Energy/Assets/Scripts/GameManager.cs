@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private int currentStage;
 
-    private int currentLevel;
+    private int currentStageLevel;
 
     [SerializeField]
     private PuzzlePiece spherePrefab;
@@ -47,10 +47,10 @@ public class GameManager : MonoBehaviour
 
         instance = this;
 
-        currentLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
+        currentStageLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY);
 
-        if (currentLevel > 0)
-            LoadStageLevel(currentLevel);
+        if (currentStageLevel > 0)
+            LoadStageLevel(currentStageLevel);
     }
 
     // Start is called before the first frame update
@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
 
         SetGameIsPlayable(true);
 
+        numberOfCorrectPieces = 0;
+
         //bad solution should have used object prefabing,
         //deleting old puzzle pieces when loading a new level
         if (puzzlePiecesList != null && puzzlePiecesList.Count != 0)
@@ -73,18 +75,22 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < puzzlePiecesList.Count; i++)
             {
                 objectDestroyed = puzzlePiecesList[i];
+                Destroy(objectDestroyed.gameObject);
                 puzzlePiecesList[i] = null;
-                Destroy(objectDestroyed);
             }
 
             puzzlePiecesList.Clear();
         }
 
-        puzzlePiecesList = new List<PuzzlePiece>();
-        rightSolutionList = new List<string>();
+        else puzzlePiecesList = new List<PuzzlePiece>();
+
+        if (rightSolutionList != null && rightSolutionList.Count > 0)
+            rightSolutionList.Clear();
+
+        else rightSolutionList = new List<string>();
 
         string stageKey = "Stage " + currentStage;
-        string levelKey = "Level " + currentLevel;
+        string levelKey = "Level " + currentStageLevel;
 
         if(JsonManager.instance.levelData[stageKey][levelKey] == null)
             throw new NullReferenceException("level key cannot be found on game manager.");
@@ -248,5 +254,17 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         GameCanvasNavigator.instance.CompletedLevel();
+    }
+
+    public void ResetLevel()
+    {
+        AudioManager.instance.StopLevelCompletedSound();
+        GameCanvasNavigator.instance.ActivateLevelCompletedText(false);
+
+        currentStageLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY);
+        currentStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
+
+        LoadStageLevel(currentStageLevel);
+        GameCanvasNavigator.instance.ActivateGameMenuButtons(false);
     }
 }

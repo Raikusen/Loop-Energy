@@ -75,8 +75,7 @@ public class PuzzlePiece : MonoBehaviour
             return;
 
         //if the player made a click on the mobile device
-        if (SystemInfo.deviceType == DeviceType.Handheld && Input.touchCount == 1 && pieceBeingHold == false
-            && (moving == false || pieceBeingHold == true))
+        if (SystemInfo.deviceType == DeviceType.Handheld && (moving == false || pieceBeingHold == true))
         {
             playerInputTouch = Input.GetTouch(0);
             //get the touch position related to the world space
@@ -157,6 +156,8 @@ public class PuzzlePiece : MonoBehaviour
 
                 //check result of trading the position of the two pieces
                 GameManager.instance.CheckTradePieces(this, tempPuzzlePiece);
+
+                AudioManager.instance.PlayPieceDroppedSound();
 
                 SetPieceMovement(false);
             }

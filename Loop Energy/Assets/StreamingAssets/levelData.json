@@ -52,7 +52,312 @@
 				"decimalAddY": 0
 			},
 			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		],
+		"Level 3":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		],
+		"Level 4":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		]
+	},
+	"Stage 2":
+	{
+		"Level 1":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
 				"sol": ["circle","rectangle","circle"]
+			}
+		],
+		"Level 2":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		],
+		"Level 3":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		],
+		"Level 4":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		],
+		"Level 5":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
+			}
+		]
+	},
+	"Stage 3":
+	{
+		"Level 1":
+		[
+			{
+				"type": "rectangle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","circle"]
+			}
+		],
+		"Level 2":
+		[
+			{
+				"type": "circle",
+				"startX": -2,
+				"decimalAddX": 1,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "circle",
+				"startX": -1,
+				"decimalAddX": 4,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 0,
+				"decimalAddX": 7,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"type": "rectangle",
+				"startX": 2,
+				"decimalAddX": 0,
+				"startY": 0,
+				"decimalAddY": 0
+			},
+			{
+				"sol": ["circle","rectangle","rectangle","circle"]
 			}
 		]
 	}
