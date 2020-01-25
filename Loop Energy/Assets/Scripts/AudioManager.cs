@@ -5,7 +5,6 @@ using UnityEngine;
 //class that contains the audio source of a button click
 public class AudioManager : MonoBehaviour
 {
-    //audio source containing the button audio clip
     private AudioSource buttonClickAudio;
 
     private AudioSource pieceClickAudio;
@@ -29,9 +28,9 @@ public class AudioManager : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+        //loading audio components
         buttonClickAudio = GetComponent<AudioSource>();
 
         CheckAudioClipException(buttonClickAudio, "buttonClick");

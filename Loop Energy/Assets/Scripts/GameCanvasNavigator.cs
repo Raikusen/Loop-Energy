@@ -41,7 +41,6 @@ public class GameCanvasNavigator : MonoBehaviour
     //singleton instance of this class
     [HideInInspector] public static GameCanvasNavigator instance;
 
-    private int currentLevel;
     private int currentStage;
     private int currenStageLevelSelected;
     private int totalLevelsAvailable;
@@ -63,6 +62,7 @@ public class GameCanvasNavigator : MonoBehaviour
         CalculateLevelNumberFromTotalLevels();
     }
 
+    //returning to main menu scene
     public void ReturnToMainMenu()
     {
         //clean game UI buttons
@@ -76,6 +76,7 @@ public class GameCanvasNavigator : MonoBehaviour
 
         gameCamera.backgroundColor = Color.blue;
 
+        //menu panel being active to hid playable pieces
         gameMenuPanel.gameObject.SetActive(true);
 
         AudioManager.instance.StopLevelCompletedSound();
@@ -148,17 +149,17 @@ public class GameCanvasNavigator : MonoBehaviour
 
     }
 
+    //behaviour for when a level is completed
     public void CompletedLevel()
     {
-        //add part of stage
-
-        //review part of previous and next level
         AudioManager.instance.PlayLevelCompletedSound();
 
+        //temporary just to activate menu buttons
         GameManager.instance.SetGameIsPlayable(true);
 
         ActivateLevelCompletedText(true);
 
+        //increase completed levels if there are still levels to be completed on the stage selected
         if (levelNumberFromTotalLevels > totalLevelsCompleted && totalLevelsCompleted < totalLevelsAvailable)
         {
             PlayerPrefs.SetInt(PlayerSetting.TOTAL_LEVELS_COMPLETED_KEY, levelNumberFromTotalLevels );
@@ -166,29 +167,28 @@ public class GameCanvasNavigator : MonoBehaviour
 
             bool stageIsCompleted = StageManager.instance.CheckIfStageIsCompleted(currentStage);
 
-            //CHECK
+            //if completed levels increased check if the level stage is also completed
             if(stageIsCompleted == false)
             {
-                int currLevKeyValue = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
-                currLevKeyValue++;
+                //update last played level count from stage yet to be completed
+                int currentLevelKeyValue = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_FROM_LAST_STAGE_UNLOCKED_KEY);
+                currentLevelKeyValue++;
 
-                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, currLevKeyValue);
+                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_FROM_LAST_STAGE_UNLOCKED_KEY, currentLevelKeyValue);
                 
-
                 int completedStages = PlayerPrefs.GetInt(PlayerSetting.STAGES_COMPLETED_KEY);
 
+                //update completed stages if all stage levels where completed
                 if (completedStages < currentStage 
                     && currenStageLevelSelected == StageManager.instance.GetTotalLevelsFromStage(currentStage))
                 {
-                    Debug.Log("stage is completed");
                     PlayerPrefs.SetInt(PlayerSetting.STAGES_COMPLETED_KEY, completedStages + 1);
-                    PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, 1);
+                    PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_FROM_LAST_STAGE_UNLOCKED_KEY, 1);
                 }
 
                 PlayerPrefs.Save();
 
             }
-            
 
             totalLevelsCompleted = levelNumberFromTotalLevels;
         }
@@ -198,7 +198,6 @@ public class GameCanvasNavigator : MonoBehaviour
         resumeLevelButton.gameObject.SetActive(false);
 
         GameManager.instance.SetGameIsPlayable(false);
-
     }
 
     private void CheckPreviousButtonActivation(bool value)
@@ -284,7 +283,7 @@ public class GameCanvasNavigator : MonoBehaviour
             bool stageIsComplete = StageManager.instance.CheckIfStageIsCompleted(stageSelected);
 
             if(stageIsComplete == false)
-                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_KEY, 1);
+                PlayerPrefs.SetInt(PlayerSetting.CURRENT_LEVEL_FROM_LAST_STAGE_UNLOCKED_KEY, 1);
 
             PlayerPrefs.Save();
 
@@ -307,9 +306,9 @@ public class GameCanvasNavigator : MonoBehaviour
         }
     }
 
+    //reset stage and level informations when it's needed
     private void CalculateLevelNumberFromTotalLevels()
     {
-        currentLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_LEVEL_KEY);
         currentStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
         currenStageLevelSelected = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY);
         totalLevelsAvailable = StageManager.instance.GetGameTotalLevels();
@@ -319,6 +318,7 @@ public class GameCanvasNavigator : MonoBehaviour
             currenStageLevelSelected);
     }
 
+    //loading camera background color
     private void LoadBackgroundColorCamera()
     {
         if (gameCamera == null)

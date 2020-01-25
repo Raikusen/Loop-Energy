@@ -5,7 +5,6 @@ using UnityEngine;
 //class implementing the behaviour of a game piece
 public class PuzzlePiece : MonoBehaviour
 {
-
     //if the piece object is being hold
     private bool pieceBeingHold = false;
 
@@ -54,7 +53,7 @@ public class PuzzlePiece : MonoBehaviour
     //maximum Y value the piece can achieve
     private float limitYPiece;
 
-    //the piece prefb type
+    //the piece prefab type
     private string pieceType;
 
     private bool pieceIsInCorrectPosition = false;
@@ -74,10 +73,11 @@ public class PuzzlePiece : MonoBehaviour
         if (GameManager.instance.GetGameIsPlayable() == false)
             return;
 
-        //if the player made a click on the mobile device
+        //if the player made a click on the mobile device, move the first piece selected
         if (SystemInfo.deviceType == DeviceType.Handheld && (moving == false || pieceBeingHold == true))
         {
             playerInputTouch = Input.GetTouch(0);
+
             //get the touch position related to the world space
             touchPosition = Camera.main.ScreenToWorldPoint(playerInputTouch.position);
 
@@ -103,7 +103,7 @@ public class PuzzlePiece : MonoBehaviour
             }
         }
 
-        //if a left mouse click was made
+        //if a left mouse click was made, move the piece selected
         else if(SystemInfo.deviceType == DeviceType.Desktop && Input.GetMouseButton(0) 
             && (moving == false || pieceBeingHold == true))
         {
@@ -124,13 +124,13 @@ public class PuzzlePiece : MonoBehaviour
 
         }
 
-        //when the mouse button is releaased stop moving the piece
+        //when the mouse button is released stop moving the piece
         else if(SystemInfo.deviceType == DeviceType.Desktop && !Input.GetMouseButton(0)
             && moving == true && pieceBeingHold == true && colliding == false)
             ReturnObjectToOldStationaryPosition();
     }
 
-    //verify is a piece can change positions with another, when both are on collision
+    //verify if a piece can change positions with another, when both are on collision
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(pieceBeingHold == true)
@@ -185,6 +185,7 @@ public class PuzzlePiece : MonoBehaviour
             ChangeToPressedSprite();
         }
 
+        //change the sprite of the piece when it is not moving
         else
         {
             spriteRenderer.sortingOrder = 1;

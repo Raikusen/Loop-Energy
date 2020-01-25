@@ -5,6 +5,7 @@ using UnityEngine;
 // needed for handling exceptions
 using System;
 
+//class used to throw some exceptions, in order to help debugging the project
 public class ExceptionHandler : MonoBehaviour
 {
     //singleton instance of this class
@@ -22,9 +23,8 @@ public class ExceptionHandler : MonoBehaviour
     public void StringNullOrWhiteException(string checkString, string exceptionMessage)
     {
         if (string.IsNullOrWhiteSpace(checkString))
-        {
             throw new ArgumentNullException(exceptionMessage);
-        }       
+               
     }
 
     //if a determinated object is null, throw a given message

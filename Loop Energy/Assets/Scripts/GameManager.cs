@@ -5,6 +5,7 @@ using System;
 
 using LitJson;
 
+//class managing the game state of a playable level
 public class GameManager : MonoBehaviour
 {
     //singleton instance of this class
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject divisionLine;
 
-    //the y limit where cannot move further than the value stipulated
+    //the y limit where pieces cannot move further than the value stipulated
     [HideInInspector] public float limitYPiece;
     private float limitYCutoff = 0.5f;
 
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     private int currentStageLevel;
 
+    //the playable pieces prefabs
     [SerializeField]
     private PuzzlePiece spherePrefab;
 
@@ -46,6 +48,12 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         instance = this;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        limitYPiece = divisionLine.transform.position.y - limitYCutoff;
 
         currentStageLevel = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_LEVEL_SELECTED_KEY);
 
@@ -53,15 +61,14 @@ public class GameManager : MonoBehaviour
             LoadStageLevel(currentStageLevel);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        limitYPiece = divisionLine.transform.position.y - limitYCutoff;
-    }
-
+    //loding the given level on the current stage selected
     public void LoadStageLevel(int level)
     {
+        //get the current stage and update the current playing stage key
         currentStage = PlayerPrefs.GetInt(PlayerSetting.CURRENT_STAGE_KEY);
+
+        PlayerPrefs.SetInt(PlayerSetting.CURRENT_PLAYING_STAGE_KEY, currentStage);
+        PlayerPrefs.Save();
 
         SetGameIsPlayable(true);
 
@@ -84,6 +91,7 @@ public class GameManager : MonoBehaviour
 
         else puzzlePiecesList = new List<PuzzlePiece>();
 
+        //deleating previous right solution 
         if (rightSolutionList != null && rightSolutionList.Count > 0)
             rightSolutionList.Clear();
 
@@ -105,19 +113,20 @@ public class GameManager : MonoBehaviour
             for (i = 0; i < totalNumberOfPieces; i++)
                 CheckPrefabSpawn(JsonManager.instance.levelData[stageKey][levelKey][i]);
 
-            //adding the corresponding types to the right solution
+            //adding the corresponding piece types to the right solution
             for(i = 0; i < totalNumberOfPieces; i++)
             {
-                string pieceMessage = JsonManager.instance.levelData[stageKey][levelKey][totalNumberOfPieces]["sol"][i].ToString();
+                string pieceMessage = JsonManager.instance.levelData[stageKey][levelKey][totalNumberOfPieces]["solution"][i].ToString();
 
                 rightSolutionList.Add(pieceMessage);
             }
 
-            //check which pieces aare already correct
+            //check which pieces are already on a correct position
             CheckCurrentSolution();
         }
     }
 
+    //check which prefab is supposed to be instantiated
     private void CheckPrefabSpawn(JsonData jsonData)
     {
         if(jsonData["type"] == null)
@@ -125,7 +134,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
-
+            //getting transform positions
             double startPosX = (double)(int)jsonData["startX"];
             double startPosY = (int)jsonData["startY"];
             double incrementalPosX = (double)(int)jsonData["decimalAddX"] * 0.1;
@@ -163,8 +172,10 @@ public class GameManager : MonoBehaviour
 
         tempPuzzlePiece.SetPieceType(pieceType);
 
+        //set the index of the piece to the position it is located on the puzzle pieces list
         tempPuzzlePiece.puzzlePiecesIndex = puzzlePiecesList.Count;
 
+        //adding the spawned piece to the puzzle pieces list
         puzzlePiecesList.Add(tempPuzzlePiece);
     }
 
@@ -178,11 +189,15 @@ public class GameManager : MonoBehaviour
         gameIsPlayable = value;
     }
 
+    //check starting solution after loading the level
+    //it is not checking if the level is currently completed already
     public void CheckCurrentSolution()
     {
         if(puzzlePiecesList.Count != rightSolutionList.Count)
             throw new InvalidOperationException("puzzle pieces list size is not the same as the solution list size");
 
+        //the pieces are correct if the types order of the puzzle list, than were placed
+        //like the order written on the level JSON file, is the same as the order of the right solution list 
         for (int i = 0; i < puzzlePiecesList.Count; i++)
         {
             //if piece is on a correct position, change it's sprite to the light one
@@ -215,7 +230,7 @@ public class GameManager : MonoBehaviour
         CheckExchangeOfPiecesPosition(pieceB, oldCorrectPosB);
     }
 
-    //check the result of a piece moving from one position to another
+    //check the result of a piece moving from one position to a position with another piece on it
     private void CheckExchangeOfPiecesPosition(PuzzlePiece puzzlePiece, bool oldCorrectValue)
     {
         //piece moved from a correct to an incorrect position
@@ -245,6 +260,8 @@ public class GameManager : MonoBehaviour
         if (numberOfCorrectPieces == totalNumberOfPieces)
         {
             GameManager.instance.gameIsPlayable = false;
+
+            //small delay after level is complete
             StartCoroutine(DelayTime(0.4f));
             
         }
@@ -256,6 +273,7 @@ public class GameManager : MonoBehaviour
         GameCanvasNavigator.instance.CompletedLevel();
     }
 
+    //reset the level to the starting pieces position
     public void ResetLevel()
     {
         AudioManager.instance.StopLevelCompletedSound();

@@ -2019,6 +2019,11 @@ PrefabInstance:
       propertyPath: GameCamera
       value: 
       objectReference: {fileID: 1099513187}
+    - target: {fileID: 1254244906056698325, guid: c20b44d5615fa5847898bf9f97201739,
+        type: 3}
+      propertyPath: gameCamera
+      value: 
+      objectReference: {fileID: 1099513187}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c20b44d5615fa5847898bf9f97201739, type: 3}
 --- !u!114 &1506625063 stripped

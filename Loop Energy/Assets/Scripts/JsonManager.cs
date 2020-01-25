@@ -9,12 +9,12 @@ using LitJson;
 public class JsonManager : MonoBehaviour
 {
     private string readFilePath;
+
     private string textFileName = "textData.json";
     private string levelFileName = "levelData.json";
 
     //string information of the json file loaded
     private string jsonTextContents;
-
     private string jsonLevelContents;
 
     //the data from the text json file, that can be found on the json text data file loaded
@@ -63,10 +63,9 @@ public class JsonManager : MonoBehaviour
             }
             jsonTextContents = www.downloadHandler.text;
         }
-        else
-        {
-            jsonTextContents = System.IO.File.ReadAllText(filePath);
-        }
+
+        else jsonTextContents = System.IO.File.ReadAllText(filePath);
+        
     }
 
     private void LoadJSONLevelFile(string filePath)
@@ -80,10 +79,9 @@ public class JsonManager : MonoBehaviour
             }
             jsonLevelContents = www.downloadHandler.text;
         }
-        else
-        {
-            jsonLevelContents = System.IO.File.ReadAllText(filePath);
-        }
+
+        else jsonLevelContents = System.IO.File.ReadAllText(filePath);
+        
     }
 
     public void LoadTextJSONFileData()
@@ -110,10 +108,11 @@ public class JsonManager : MonoBehaviour
             levelData = JsonMapper.ToObject(jsonLevelContents);
     }
 
+    //changing the text language of a button if needed
     public void CheckButtonTextLanguageJSON(Button button, ButtonData buttonData)
     {
         //if button exists and the button text language is not the same as the current game language,
-        //change the button text language
+        //or a level number on a button has to change, change the button text language
         if (!(string.Equals(buttonData.buttonTextLanguage,
             JsonManager.instance.currentTextLanguage)) || buttonData.refreshButtonText == true)
         {

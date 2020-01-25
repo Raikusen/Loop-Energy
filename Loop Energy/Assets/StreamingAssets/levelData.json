@@ -25,7 +25,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","circle"]
+				"solution": ["circle","rectangle","circle"]
 			}
 		],
 		"Level 2":
@@ -59,7 +59,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		],
 		"Level 3":
@@ -93,7 +93,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		],
 		"Level 4":
@@ -127,7 +127,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		]
 	},
@@ -157,7 +157,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","circle"]
+				"solution": ["circle","rectangle","circle"]
 			}
 		],
 		"Level 2":
@@ -191,7 +191,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		],
 		"Level 3":
@@ -225,7 +225,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		],
 		"Level 4":
@@ -259,7 +259,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		],
 		"Level 5":
@@ -293,7 +293,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		]
 	},
@@ -323,7 +323,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","circle"]
+				"solution": ["circle","rectangle","circle"]
 			}
 		],
 		"Level 2":
@@ -357,7 +357,7 @@
 				"decimalAddY": 0
 			},
 			{
-				"sol": ["circle","rectangle","rectangle","circle"]
+				"solution": ["circle","rectangle","rectangle","circle"]
 			}
 		]
 	}
